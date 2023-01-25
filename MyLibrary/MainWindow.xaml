@@ -61,7 +61,7 @@
             <TabControl>
                 <TabItem Header="Books" FontWeight="Bold" Background="LightSeaGreen" DataContext="{StaticResource BooksTable}">
                 <!-- Code setting up properties of TabItem... -->
-                    <DataGrid ItemsSource="{Binding Mode=OneWay}" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="True"
+                    <DataGrid ItemsSource="{Binding Mode=OneWay}" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False"
                         x:Name="booksDataGrid" d:LayoutOverrides="Height" HorizontalAlignment="Center" SelectionChanged="booksDataGrid_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Title" Width="Auto" Binding="{Binding books_title}"/>
@@ -78,7 +78,7 @@
             </TabControl>
         </StackPanel>
 
-
+<!--/
         <TextBox x:Name="txtTitle" VerticalAlignment="Top" Grid.Column="9" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2"/>
         <TextBox x:Name="txtPages" VerticalAlignment="Top" Grid.Column="9" Grid.Row="3" Grid.RowSpan="1" Grid.ColumnSpan="2"/>
         <TextBox x:Name="txtAuthor" VerticalAlignment="Top" Grid.Column="9" Grid.Row="4" Grid.RowSpan="1" Grid.ColumnSpan="2"/>
@@ -87,6 +87,20 @@
         <Label Content="Pages:" VerticalAlignment="Bottom" Grid.Column="9" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="1"/>
         <Label Content="Author:" VerticalAlignment="Bottom" Grid.Column="9" Grid.Row="3" Grid.RowSpan="1" Grid.ColumnSpan="1"/>
         <Label Content="Name:" VerticalAlignment="Bottom" Grid.Column="9" Grid.Row="4" Grid.RowSpan="1" Grid.ColumnSpan="1"/>
+-->
 
+        <ListBox x:Name="wishlist" ItemsSource="{Binding wishList}" VerticalAlignment="Top" Grid.Column="9" Grid.Row="2" Grid.RowSpan="4" Grid.ColumnSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <TextBlock Text="{Binding Path=author}" />
+                        <TextBlock Text="{Binding Path=title}" />
+                        <TextBlock Text="{Binding Path=genre}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Label x:Name="lblwishList" Content="" VerticalAlignment="Top" Grid.Column="9" Grid.Row="2" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
     </Grid>
 </Window>
