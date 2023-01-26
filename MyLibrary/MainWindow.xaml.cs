@@ -188,12 +188,12 @@ namespace MyLibrary
             if (!changingLocation)
             {
                 MessageBox.Show("Row changed event triggered");
-                //UpdateDBIssues();
+                //UpdateDBbooks();
             }
         }
 
         /*
-        private void UpdateDBIssues()
+        private void UpdateDBBooks()
         {
             conn = new MySqlConnection(DatabaseManager.connString);
 
@@ -202,7 +202,8 @@ namespace MyLibrary
                 conn.Open();
                 MessageBox.Show("Connection Open!");
                 
-
+                string updateString = $"CALL update_books();"
+                $"CALL updatePeople({id}, '{name}', {age}, '{petName}');";
                 string updateString = "UPDATE issues SET IssueTitle=?IssueTitle, Title=?Title, Volume=?Volume, Number=?Number, " +
                   "IssueDay=?IssueDay, IssueMonth=?IssueMonth, IssueYear=?IssueYear, ComicVine=?ComicVine WHERE " +
                   "Key_Issues=?oldKey_Issues";
@@ -219,8 +220,10 @@ namespace MyLibrary
                 parameter.SourceVersion = DataRowVersion.Original;
                 MySqlDataAdapter adapter = new MySqlDataAdapter();
                 adapter.UpdateCommand = updateCommand;
+                
 
-                string insertString = "INSERT INTO issues (Key_Issues, IssueTitle, Title, Volume, Number, IssueDay, IssueMonth, IssueYear, ComicVine) " +
+                query = $"CALL insert_books('{title}', '{name}', {age}, '{petName}' );"
+                //string insertString = "INSERT INTO issues (Key_Issues, IssueTitle, Title, Volume, Number, IssueDay, IssueMonth, IssueYear, ComicVine) " +
                   "VALUES (?Key_Issues, ?IssueTitle, " + booksTitlesComboBox.SelectedValue + ", ?Volume, ?Number, ?IssueDay, ?IssueMonth, ?IssueYear, ?ComicVine)";
                 MySqlCommand insertCommand = new MySqlCommand(insertString, conn);
                 insertCommand.Parameters.Add("?Key_Issues", MySqlDbType.Int32, 10, "Key_Issues");
