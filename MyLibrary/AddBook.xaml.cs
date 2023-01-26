@@ -32,8 +32,18 @@ namespace MyLibrary
             this.location = location;
 
             InitializeComponent();
+            loadPage();
+            
         }
 
+        internal void loadPage() {
+            if (location == "Bookshelf")
+                header.Text = "Add book to Library";
+                pile.Visibility = Visibility.Visible;
+
+            if (location == "Wishlist")
+                header.Text = "Add book to Wishlist";
+        }
         internal void createBook() {
 
             conn = new MySqlConnection(DatabaseManager.connString);
@@ -106,6 +116,11 @@ namespace MyLibrary
         {
             mainWindow.Show();
             this.Close();
+        }
+
+        private void pile_Checked(object sender, RoutedEventArgs e)
+        {
+            location = "Priority Pile";
         }
     }
 }
