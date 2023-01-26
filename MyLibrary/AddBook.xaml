@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AddBook" Height="450" Width="650" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-
+            
         <Grid Margin="60,60,60,30">
             <TextBlock Height="20" x:Name="author" HorizontalAlignment="left" Text="Author:" Margin="50 5 0 0" VerticalAlignment="top" FontSize="15" FontWeight="SemiBold" Foreground="black" FontFamily="Arial"/>
             <TextBlock Height="20" x:Name="title" HorizontalAlignment="left" Text="Title:" Margin="50 35 0 0" VerticalAlignment="top" FontSize="15" FontWeight="SemiBold" Foreground="black" FontFamily="Arial"/>
@@ -26,10 +26,10 @@
                 <TextBox Height="20" x:Name="languageBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0"/>
                 <TextBox Height="20" x:Name="genreBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0"/>
             </StackPanel>
-            <Button Height="20" x:Name="submitButton" Click ="clickSubmitButton" Width="100" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Visible"/>
+           <!--/ <Button Height="20" x:Name="submitButton" Click ="clickSubmitButton" Width="100" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Visible"/>
             <Button Height="20" x:Name="ContinueShoppingButton" Click ="ClickContinueShoppingButton" Width="100" Content="Continue shopping" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Hidden"/>
-            <Button Height="20" x:Name="resetButton" Click ="clickResetButton" Width="100" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20 0 200 30" Background="Yellow" Visibility="Visible"/>
-            <Button Height="20" x:Name="cancelButton" Click="clickCancelButton" Width="100" Content="Cancel" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="40 0 0 30" Background="red" Visibility="Visible"/>
+            <Button Height="20" x:Name="resetButton" Click ="clickResetButton" Width="100" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20 0 200 30" Background="Yellow" Visibility="Visible"/> /-->
+            <Button Height="20" x:Name="returnButton" Click="returnButton_Click" Width="100" Content="Return to Library" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="40 0 0 30" Visibility="Visible"/> 
         </Grid>
     </Grid>
 </Window>

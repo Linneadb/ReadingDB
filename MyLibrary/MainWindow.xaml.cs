@@ -35,7 +35,7 @@ namespace MyLibrary
         {
             InitializeComponent();
 
-            showWishlist();
+            
 
             booksTable = (DataTable)((DataSourceProvider)FindResource("BooksTable")).Data;
             booksTable.RowChanged += new DataRowChangeEventHandler(booksTable_RowChanged);
@@ -44,9 +44,9 @@ namespace MyLibrary
 
             establishDBConnection();
             //selectFromDB("select * from books");
+            showWishlist();
 
-            
-           //is data loading?
+            //is data loading?
             //txtBooks = new TextBox[] { txtTitle, txtPages, txtAuthor };
             //txtAuthors = new TextBox[] { txtName };
         }
@@ -147,14 +147,14 @@ namespace MyLibrary
 
         private void addBook_Click(object sender, RoutedEventArgs e)
         {
-            AddBook addBook = new AddBook(this);
+            AddBook addBook = new AddBook(this, "Bookshelf");
             addBook.Show();
             this.Hide();
         }
 
         private void addWishlist_Click(object sender, RoutedEventArgs e)
         {
-            AddBook addBook = new AddBook(this);
+            AddBook addBook = new AddBook(this, "Wishlist");
             addBook.Show();
             this.Hide();
         }
