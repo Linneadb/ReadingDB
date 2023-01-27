@@ -144,6 +144,7 @@ namespace MyLibrary
 
         private void addBook_Click(object sender, RoutedEventArgs e)
         {
+            
             AddBook addBook = new AddBook(this, "Bookshelf");
             addBook.Show();
             this.Hide();
@@ -300,22 +301,19 @@ namespace MyLibrary
                 //Tömma wishList 
                 Book.wishList.Clear();
 
-                //Exekvera SQL query
-                reader2 = command.ExecuteReader();
-
                 //While Loop för att skriva ut hämtad data
                 while (reader2.Read())
                 {
                     //Hämta specifik data från Reader objekt
                     string title = reader2["books_title"].ToString();
-                    string author = reader2["authors_author"].ToString();
-                    string genre = reader2["genres_genres"].ToString();
+                    string author = reader2["authors_name"].ToString();
+                    string genre = reader2["genres"].ToString();
 
                     //Skapa ett nytt objekt av People och sparar det i statisk lista
                     Book.wishList.Add(new Book(title, author, genre));
 
                         //Skriva ut värden till label
-                        lblwishList.Content += $"{title} by {author} Genre:{genre}{Environment.NewLine}";
+                        lblwishList.Content += $"{title} by {author} \nGenre:{genre}\n{Environment.NewLine}";
                 }
                 
                 reader2.Close();

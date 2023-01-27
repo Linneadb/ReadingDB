@@ -40,6 +40,7 @@
             <ColumnDefinition Width="20"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
 
@@ -103,6 +104,6 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Label x:Name="lblwishList" Content="" VerticalAlignment="Top" Grid.Column="9" Grid.Row="2" Grid.RowSpan="4" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblwishList" Content="" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="2" Grid.RowSpan="4" Grid.ColumnSpan="3"/>
     </Grid>
 </Window>
