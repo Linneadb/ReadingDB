@@ -47,7 +47,7 @@ namespace MyLibrary
         internal void createBook() {
 
             conn = new MySqlConnection(DatabaseManager.connString);
-            bool valid = false;
+            bool valid = true;
 
             foreach (TextBox box in boxes.Children.OfType<TextBox>())
             {
@@ -56,21 +56,22 @@ namespace MyLibrary
                 if (box.Text == "")
                 {
                     box.Background = Brushes.Red;
+                    valid = true;
                 }
                 else
                 {
                     box.Background = Brushes.White;
-                    valid = true;
                 }
             }
 
-            if (valid)
+            if (!valid)
             {
                 returnText.Text = "Complete missing data in marked fields.";
                 return;
             }
 
             string author = authorBox.Text;
+            string nation = nationBox.Text;
             string title = titleBox.Text;
             int pages = Convert.ToInt32(pagesBox.Text);
             int series = Convert.ToInt32(seriesBox.Text);
@@ -78,7 +79,7 @@ namespace MyLibrary
             string language = languageBox.Text;
             string genre = genreBox.Text;
 
-            string query = $"CALL create_book('{author}','{title}','{pages}','{series}','{year_written}', '{language}', '{location}', '{genre}');";
+            string query = $"CALL create_book('{author}','{nation}','{title}','{pages}','{series}','{year_written}', '{language}', '{location}', '{genre}');";
             MySqlCommand cmd = new MySqlCommand(query, conn);
 
 
@@ -102,14 +103,12 @@ namespace MyLibrary
             //Hämta data
             //getSelectedRow();
 
-            returnText.Text = "Book added to library";
+            returnText.Text = "Book added to " + location.ToString();
             foreach (TextBox box in boxes.Children.OfType<TextBox>())
             {
                 box.Clear();
                 returnText.Text = "";
             }
-
-
         }
 
         private void returnButton_Click(object sender, RoutedEventArgs e)
@@ -121,6 +120,11 @@ namespace MyLibrary
         private void pile_Checked(object sender, RoutedEventArgs e)
         {
             location = "Priority Pile";
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+            createBook();
         }
     }
 }

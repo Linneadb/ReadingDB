@@ -27,23 +27,20 @@ namespace MyLibrary
     public partial class MainWindow : Window
     {
         DataTable booksTable;
-        MySqlConnection conn;
         String query = "";
-        TextBox[] txtBooks;
-        TextBox[] txtAuthors;
+
         public MainWindow()
         {
             InitializeComponent();
 
             
 
-            booksTable = (DataTable)((DataSourceProvider)FindResource("BooksTable")).Data;
-            booksTable.RowChanged += new DataRowChangeEventHandler(booksTable_RowChanged);
+            //booksTable = (DataTable)((DataSourceProvider)FindResource("BooksTable")).Data;
+            //booksTable.RowChanged += new DataRowChangeEventHandler(booksTable_RowChanged);
             //booksTable.RowChanging += new DataRowChangeEventHandler(booksTable_RowChanging);
  
 
             establishDBConnection();
-            //selectFromDB("select * from books");
             showWishlist();
 
             //is data loading?
@@ -53,12 +50,12 @@ namespace MyLibrary
 
         private void booksTable_RowChanging(object sender, DataRowChangeEventArgs e)
         {
-            MessageBox.Show("RowChanging event triggered!");
+            //
         }
 
         internal void establishDBConnection()
         {
-            conn = new MySqlConnection(DatabaseManager.connString);
+            MySqlConnection conn = new MySqlConnection(DatabaseManager.connString);
 
            //verify DB connection success
            try
@@ -73,7 +70,7 @@ namespace MyLibrary
            }
         }
        
-
+        /*
         private void selectFromDB(string query)
         {
 
@@ -112,38 +109,38 @@ namespace MyLibrary
                     int year = Convert.ToInt32(reader["books_year_written"]);
                     
                     int author = Convert.ToInt32(reader["authors_authors_id"]);
-/*
-                    txtTitle.Text = title;
-                    txtPages.Text = pages.ToString();
-                    txtAuthor.Text = author.ToString();
-                    */
-                    //Skriva ut värden till label
-                    //lblSelectOutput.Text += $"{name} är {age} år gammal. Husdjuret heter {petName}{Environment.NewLine}";
+                    /*
+                                        txtTitle.Text = title;
+                                        txtPages.Text = pages.ToString();
+                                        txtAuthor.Text = author.ToString();
 
-                    //add an instance of Books and save to static list
-                    Book.books.Add(new Book(id, title, pages, series, year));
+                                        //Skriva ut värden till label
+                                        //lblSelectOutput.Text += $"{name} är {age} år gammal. Husdjuret heter {petName}{Environment.NewLine}";
 
-                    /*foreach (Book book in Book.bookList)
-                    {
-                        //Söker efter rätt post i listan
-                        if (person.Id == id)
-                        {
-                            //Hittat rätt person
+                                        //add an instance of Books and save to static list
+                                        Book.books.Add(new Book(id, title, pages, series, year));
 
-                            //Hämta properties från person och skriv in dem i textfält
+                                        /*foreach (Book book in Book.bookList)
+                                        {
+                                            //Söker efter rätt post i listan
+                                            if (person.Id == id)
+                                            {
+                                                //Hittat rätt person
+
+                                                //Hämta properties från person och skriv in dem i textfält
 
 
-                        }*/
-                    reader.Close();
-                    conn.Close();
-                }
-            }
 
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+                                        reader.Close();
+                                        conn.Close();
+                                    }
+                                }
+
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show(ex.Message);
+                                }
+                            } }*/
 
         private void addBook_Click(object sender, RoutedEventArgs e)
         {
@@ -273,8 +270,9 @@ namespace MyLibrary
 
         private void showWishlist(string keyword = "")
         {
-            conn = new MySqlConnection(DatabaseManager.connString);
-
+            
+            MySqlConnection connection = new MySqlConnection(DatabaseManager.connString);
+            
             // Kontrollera om keyword har ett inkommade värde
             if (keyword == "")
             {
@@ -288,40 +286,40 @@ namespace MyLibrary
             }
 
             //Skapar ett MySQLCommand objekt
-            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlCommand command = new MySqlCommand(query, connection);
 
             //Try/Catch block
             try
             {
                 //Öppna koppling till DB
-                conn.Open();
+                connection.Open();
 
                 //Exekvera SQL querry
-                MySqlDataReader reader = cmd.ExecuteReader();
+                MySqlDataReader reader2 = command.ExecuteReader();
                 
                 //Tömma wishList 
                 Book.wishList.Clear();
 
                 //Exekvera SQL query
-                reader = cmd.ExecuteReader();
+                reader2 = command.ExecuteReader();
 
                 //While Loop för att skriva ut hämtad data
-                while (reader.Read())
+                while (reader2.Read())
                 {
                     //Hämta specifik data från Reader objekt
-                    string title = reader["books_title"].ToString();
-                    string author = reader["authors_author"].ToString();
-                    string genre = reader["genres_genres"].ToString();
+                    string title = reader2["books_title"].ToString();
+                    string author = reader2["authors_author"].ToString();
+                    string genre = reader2["genres_genres"].ToString();
 
                     //Skapa ett nytt objekt av People och sparar det i statisk lista
                     Book.wishList.Add(new Book(title, author, genre));
 
-                    //Skriva ut värden till label
-                    lblwishList.Content += $"{title} by {author} Genre:{genre}{Environment.NewLine}";
+                        //Skriva ut värden till label
+                        lblwishList.Content += $"{title} by {author} Genre:{genre}{Environment.NewLine}";
                 }
-
-                //stänger kopplingen till DB
-                conn.Close();
+                
+                reader2.Close();
+                connection.Close();
             }
             catch (Exception e)
             {

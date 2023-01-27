@@ -46,18 +46,20 @@
         <Label Content="My Library" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="3" FontWeight="Bold" FontSize="30" FontFamily="Arial"/>
 
 
-        <Button x:Name="addBook" Content="Add book to Library" Click="addBook_Click" VerticalAlignment="Top" Grid.Column="1" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
-        <Button x:Name="addWishlist" Content="Add book to Wishlist" Click="addWishlist_Click" VerticalAlignment="Top" Grid.Column="1" Grid.Row="3" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
+        <Button x:Name="addBook" Content="Add book to Library" Click="addBook_Click" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
+        <Button x:Name="addWishlist" Content="Add book to Wishlist" Click="addWishlist_Click" VerticalAlignment="Center" Grid.Column="1" Grid.Row="3" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
 
+        <Label Content="Show table:" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <ComboBox x:Name="booksLocationsComboBox"
-            SelectedValuePath="Tag" VerticalAlignment="Center" HorizontalContentAlignment="Stretch" Grid.Row="5" Grid.Column="1"
-            SelectionChanged="booksLocationsComboBox_SelectionChanged" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Left" Margin="66,0,0,0" Width="67" >
+            SelectedValuePath="Tag" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Row="2" Grid.Column="2"
+            SelectionChanged="booksLocationsComboBox_SelectionChanged" FontWeight="Bold" Grid.ColumnSpan="1" HorizontalAlignment="Right" Width="67" >
                 <ComboBoxItem Content="Wishlist" Tag="Wishlist"/>
                 <ComboBoxItem Content="Library" Tag="Library"/>
         </ComboBox>
 
 
-        <StackPanel Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="LightSeaGreen">
+        <StackPanel Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="3" Background="LightSeaGreen" ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Visible">
             <TabControl>
                 <TabItem Header="Books" FontWeight="Bold" Background="LightSeaGreen" DataContext="{StaticResource BooksTable}">
                 <!-- Code setting up properties of TabItem... -->
