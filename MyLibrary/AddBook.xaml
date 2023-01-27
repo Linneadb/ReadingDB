@@ -20,14 +20,19 @@
             <TextBlock Height="20" x:Name="genre" HorizontalAlignment="left" Text="Genre:" Margin="50 215 0 0" VerticalAlignment="top" FontSize="15" Foreground="black" FontFamily="Arial"/>
             <TextBlock Height="20" x:Name="returnText" HorizontalAlignment="Left" Text="" Margin="50 245 0 0" VerticalAlignment="top" FontSize="15" FontWeight="Bold" Foreground="Red" FontFamily="Arial" />
             <StackPanel x:Name="boxes">
-                <TextBox Height="20" x:Name="authorBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0" />
-                <TextBox Height="20" x:Name="nationBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0" />
-                <TextBox Height="20" x:Name="titleBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0" />
-                <TextBox Height="20" x:Name="pagesBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0" />
-                <TextBox Height="20" x:Name="seriesBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0" />
-                <TextBox Height="20" x:Name="yearBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0" />
-                <TextBox Height="20" x:Name="languageBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0"/>
-                <TextBox Height="20" x:Name="genreBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="5 10 20 0"/>
+                <TextBox Height="20" x:Name="authorBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 5 20 0" />
+                <TextBox Height="20" x:Name="nationBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0" />
+                <TextBox Height="20" x:Name="titleBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0" />
+                <TextBox Height="20" x:Name="pagesBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0" />
+                <TextBox Height="20" x:Name="seriesBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0" />
+                <TextBox Height="20" x:Name="yearBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0" />
+                <TextBox Height="20" x:Name="languageBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0"/>
+                <TextBox Height="20" x:Name="genreBox" HorizontalAlignment="Center" VerticalAlignment="Top" Width="200" Margin="2 10 20 0"/>
+            </StackPanel>
+
+            <StackPanel x:Name="searchButtons">
+                <Button Height="20" x:Name="authorButton" Click ="authorButton_Click" Width="120" Content="Search author name" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="50 5 10 30" Visibility="Visible"/>
+                <Button Height="20" x:Name="bookButton" Click ="bookButton_Click" Width="120" Content="Search book title" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 10 10 0" Visibility="Visible"/>
             </StackPanel>
            <!--/ <Button Height="20" x:Name="submitButton" Click ="clickSubmitButton" Width="100" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Visible"/>
             <Button Height="20" x:Name="ContinueShoppingButton" Click ="ClickContinueShoppingButton" Width="100" Content="Continue shopping" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Hidden"/>/-->

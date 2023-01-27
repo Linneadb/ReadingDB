@@ -61,7 +61,7 @@ namespace MyLibrary
            try
            {
                conn.Open();
-               MessageBox.Show("Connection Open!"); 
+               //MessageBox.Show("Connection Open!"); 
                conn.Close();
            }
            catch (Exception ex)
@@ -171,7 +171,6 @@ namespace MyLibrary
                 if (value == "Library") {
                     DatabaseTable.GetTable($"CALL get_library();", booksTable);
                 }
-           
             }
             changingLocation = false;
         }
@@ -272,7 +271,7 @@ namespace MyLibrary
         private void showWishlist(string keyword = "")
         {
             
-            MySqlConnection connection = new MySqlConnection(DatabaseManager.connString);
+            MySqlConnection conn = new MySqlConnection(DatabaseManager.connString);
             
             // Kontrollera om keyword har ett inkommade värde
             if (keyword == "")
@@ -282,42 +281,33 @@ namespace MyLibrary
             }
             else
             {
-                //Query för att söka på spcifikt namn
+                //Query för att söka på specifikt namn
                 query = $"CALL searchName('{keyword}');";
             }
 
-            //Skapar ett MySQLCommand objekt
-            MySqlCommand command = new MySqlCommand(query, connection);
+            MySqlCommand cmd = new MySqlCommand(query, conn);
 
-            //Try/Catch block
             try
             {
-                //Öppna koppling till DB
-                connection.Open();
+                conn.Open();
 
-                //Exekvera SQL querry
-                MySqlDataReader reader2 = command.ExecuteReader();
-                
-                //Tömma wishList 
+                MySqlDataReader reader = cmd.ExecuteReader();
                 Book.wishList.Clear();
-
-                //While Loop för att skriva ut hämtad data
-                while (reader2.Read())
+                while (reader.Read())
                 {
-                    //Hämta specifik data från Reader objekt
-                    string title = reader2["books_title"].ToString();
-                    string author = reader2["authors_name"].ToString();
-                    string genre = reader2["genres"].ToString();
+                    string title = reader["books_title"].ToString();
+                    string author = reader["authors_name"].ToString();
+                    string genre = reader["genres"].ToString();
 
-                    //Skapa ett nytt objekt av People och sparar det i statisk lista
+                    //create instance of book and save to list
                     Book.wishList.Add(new Book(title, author, genre));
 
-                        //Skriva ut värden till label
-                        lblwishList.Content += $"{title} by {author} \nGenre:{genre}\n{Environment.NewLine}";
+                    //String to print to label
+                    lblwishList.Content += $"{title} by {author} \nGenre:{genre}\n{Environment.NewLine}";
                 }
                 
-                reader2.Close();
-                connection.Close();
+                reader.Close();
+                conn.Close();
             }
             catch (Exception e)
             {
@@ -325,6 +315,16 @@ namespace MyLibrary
             }
         }
 
+        private void searchBook_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void searchAuthor_Click(object sender, RoutedEventArgs e)
+        {
+            AddBook addBook = new AddBook(this, "searchAuthor");
+            addBook.Show();
+            this.Hide();
+        }
     }
 }

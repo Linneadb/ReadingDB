@@ -43,6 +43,15 @@ namespace MyLibrary
 
             if (location == "Wishlist")
                 header.Text = "Add book to Wishlist";
+
+            if (location == "searchAuthor")
+                header.Text = "Search author name";
+                addButton.Visibility = Visibility.Hidden;  
+        }
+
+        internal void searchAuthor() {
+            string keyword = authorBox.Text;
+            
         }
         internal void createBook() {
 
@@ -125,6 +134,16 @@ namespace MyLibrary
         private void addButton_Click(object sender, RoutedEventArgs e)
         {
             createBook();
+        }
+
+        private void authorButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void bookButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
