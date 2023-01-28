@@ -74,7 +74,16 @@ namespace MyLibrary
             Genre = genre;
         }
 
+        public Book(string title, int pages, int series, int year_written, string language, string location)
+        {
+            this.title = title;
+            this.pages = pages;
+            this.series = series;
+            this.language = language;
+            this.location = location;
+        }
 
+        public static List<Book> bookList = new List<Book>();
         public static List<Book> authorList = new List<Book>();
         public static List<Book> wishList = new List<Book>();
 

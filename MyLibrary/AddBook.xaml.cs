@@ -23,15 +23,15 @@ namespace MyLibrary
     public partial class AddBook : Window
     {
         private MainWindow mainWindow;
-        string location;
+        string windowkey;
         MySqlConnection conn;
 
         //Book.X = new Book(author, nationality, title, pages, series, year_written, language, location, genre)
 
-        public AddBook(MainWindow mainWindow, string location)
+        public AddBook(MainWindow mainWindow, string windowkey)
         {
             this.mainWindow = mainWindow;
-            this.location = location;
+            this.windowkey = windowkey;
 
             InitializeComponent();
             loadPage();
@@ -39,18 +39,26 @@ namespace MyLibrary
         }
 
         internal void loadPage() {
-            if (location == "Bookshelf")
+            if (windowkey == "Bookshelf")
                 header.Text = "Add book to Library";
                 pile.Visibility = Visibility.Visible;
 
-            if (location == "Wishlist")
+            if (windowkey == "Wishlist")
                 header.Text = "Add book to Wishlist";
 
-            if (location == "searchAuthor")
+            if (windowkey == "searchAuthor")
+            {
                 header.Text = "Search author name";
                 addButton.Visibility = Visibility.Hidden;
                 pile.Visibility = Visibility.Hidden;
                 bookButton.Visibility = Visibility.Hidden;
+            }
+            if (windowkey == "searchBook") {
+                header.Text = "Search book title";
+                addButton.Visibility = Visibility.Hidden;
+                pile.Visibility = Visibility.Hidden;
+                authorButton.Visibility = Visibility.Hidden;
+            }
         }
 
         internal void searchAuthor() {
@@ -113,12 +121,74 @@ namespace MyLibrary
 
         private void searchBook()
         {
-            throw new NotImplementedException();
+            string keyword;
+            conn = new MySqlConnection(DatabaseManager.connString);
+
+            if (titleBox.Text != "")
+            {
+                keyword = titleBox.Text.Trim();
+            }
+            else
+            {
+                returnText.Text = "You have not entered a book title to search for.";
+                return;
+            }
+
+            string query = $"CALL search_book('{keyword}');";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+
+            try
+            {
+                conn.Open();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
+                Book.bookList.Clear();
+                while (reader.Read())
+                {
+                    string title = reader["books_title"].ToString();
+                    int pages = Convert.ToInt32(reader["books_nr_pages"]);
+                    int series = Convert.ToInt32(reader["books_nr_in_series"]);
+                    int year_written = Convert.ToInt32(reader["books_year_written"]);
+                    string language = reader["languages_languages"].ToString();
+                    //string genre = reader["genres_genres"].ToString();
+                    string location = reader["locations_locations"].ToString();
+
+                    Book.bookList.Add(new Book(title, pages, series, year_written, language, location));
+
+                    if (Book.bookList.Count > 1)
+                    {
+                        //TODO: nextButton.Visability = Visibility.Visible;
+                    }
+
+                    titleBox.Text = title;
+                    pagesBox.Text = pages.ToString();
+                    seriesBox.Text = series.ToString();
+                    yearBox.Text = year_written.ToString();
+                    languageBox.Text = language;
+                }
+
+                reader.Close();
+                conn.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            if (title.Equals(null))
+            {
+                returnText.Text = titleBox.Text + " not found in database";
+            }
+
+            else
+            {
+                returnText.Text = titleBox.Text + " found in database";
+            }
+
+            addButton.Visibility = Visibility.Visible;
         }
 
-
-
-        internal void createBook() {
+        internal void createBook(string location="") {
 
             conn = new MySqlConnection(DatabaseManager.connString);
             bool valid = true;
@@ -183,7 +253,7 @@ namespace MyLibrary
 
         private void pile_Checked(object sender, RoutedEventArgs e)
         {
-            location = "Priority Pile";
+            windowkey = "Priority Pile";
         }
 
         private void addButton_Click(object sender, RoutedEventArgs e)
