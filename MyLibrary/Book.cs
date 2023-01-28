@@ -17,7 +17,13 @@ namespace MyLibrary
         int Pages;
         int Series;
         int Year;
-        
+
+
+        string Author;
+        string Nationality;
+        string Language;
+        string Location;
+        string Genre;
 
         public int id { get { return Id; } set { id = Id; } }
         public string title { get { return Title; } set { Title = value; } }
@@ -26,14 +32,14 @@ namespace MyLibrary
 
         public int year { get { return Year; } set { Year = value; } }
 
+
         public string author { get => Author; set => Author = value; }
         public string genre { get => Genre; set => Genre = value; }
+        public string nationality { get => Nationality; set => Nationality = value; }
+        public string language { get => Language; set => Language = value; }
+        public string location { get => Location; set => Location = value; }
 
-        string Author;
-        string Genre;
-
-
-
+  
         public Book(int id, string title, int pages, int series, int year) {
             Id = id;
             Title = title;
@@ -49,14 +55,28 @@ namespace MyLibrary
             Genre = genre;
         }
 
-        public static List<Book> books = new List<Book>();
+        public Book(string author, string nationality) 
+        {
+            Author = author;
+            Nationality = nationality;
+        }
+
+        public Book(string author, string nationality, string title, int pages, int series, int year, string language, string location, string genre)
+        {
+            Author = author;
+            Nationality = nationality;
+            Title = title;
+            Pages=pages;
+            Series = series;
+            Year=year;
+            Language = language;
+            Location = location;
+            Genre = genre;
+        }
+
+
+        public static List<Book> authorList = new List<Book>();
         public static List<Book> wishList = new List<Book>();
-
-        /*
-        string author;
-        public string Author { get { return author; } set { author = value; } }
-        */
-
 
     }
 }
