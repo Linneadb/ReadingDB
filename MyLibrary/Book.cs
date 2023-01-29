@@ -88,6 +88,6 @@ namespace MyLibrary
 
         public static List<Book> bookList = new List<Book>();
         public static List<Book> authorList = new List<Book>();
-        public static List<Book> wishList = new List<Book>();
+        public static List<Book> priorityList = new List<Book>();
     }
 }

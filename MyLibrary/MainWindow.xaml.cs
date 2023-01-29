@@ -35,7 +35,7 @@ namespace MyLibrary
 
             
 
-            //booksTable = (DataTable)((DataSourceProvider)FindResource("BooksTable")).Data;
+            booksTable = (DataTable)((DataSourceProvider)FindResource("BooksTable")).Data;
             //booksTable.RowChanged += new DataRowChangeEventHandler(booksTable_RowChanged);
             //booksTable.RowChanging += new DataRowChangeEventHandler(booksTable_RowChanging);
  
@@ -53,7 +53,6 @@ namespace MyLibrary
         {
             MySqlConnection conn = new MySqlConnection(DatabaseManager.connString);
 
-           //verify DB connection success
            try
            {
                conn.Open();
@@ -64,21 +63,6 @@ namespace MyLibrary
            {
                MessageBox.Show("Can not open connection!" + ex.Message);
            }
-        }
-       
-        private void addBook_Click(object sender, RoutedEventArgs e)
-        {
-            
-            AddBook addBook = new AddBook(this, "Bookshelf");
-            addBook.Show();
-            this.Hide();
-        }
-
-        private void addWishlist_Click(object sender, RoutedEventArgs e)
-        {
-            AddBook addBook = new AddBook(this, "Wishlist");
-            addBook.Show();
-            this.Hide();
         }
 
         bool changingLocation = false;  // Prevent row change
@@ -101,7 +85,9 @@ namespace MyLibrary
 
         private void booksDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MessageBox.Show("Selection changed event triggered");
+            //MessageBox.Show("Selection changed event triggered");
+            string title = booksDataGrid.SelectedItem.ToString();
+            MessageBox.Show(title + "booktitel");
         }
 
         void booksTable_RowChanged(object sender, DataRowChangeEventArgs e)
@@ -121,14 +107,10 @@ namespace MyLibrary
             try
             {
                 conn.Open();
-                MessageBox.Show("Connection Open!");
                 
-                string updateString = $"CALL update_books();"
-                $"CALL updatePeople({id}, '{name}', {age}, '{petName}');";
-                string updateString = "UPDATE issues SET IssueTitle=?IssueTitle, Title=?Title, Volume=?Volume, Number=?Number, " +
-                  "IssueDay=?IssueDay, IssueMonth=?IssueMonth, IssueYear=?IssueYear, ComicVine=?ComicVine WHERE " +
-                  "Key_Issues=?oldKey_Issues";
-                MySqlCommand updateCommand = new MySqlCommand(updateString, conn);
+                query = "UPDATE books SET books_title=?Title, books_pages=?Pages, books_nr_series=?Nr, books_year_written=?Year WHERE 
+                  "Key_Bookstable=?oldKey_Bookstable";
+                MySqlCommand updateCommand = new MySqlCommand(query, conn);
                 updateCommand.Parameters.Add("?IssueTitle", MySqlDbType.VarChar, 100, "IssueTitle");
                 updateCommand.Parameters.Add("?Title", MySqlDbType.Int32, 10, "Title");
                 updateCommand.Parameters.Add("?Volume", MySqlDbType.Int32, 10, "Volume");
@@ -192,23 +174,10 @@ namespace MyLibrary
             }
         }
 
-        private void showWishlist(string keyword = "")
+        private void showWishlist()
         {
-            
             MySqlConnection conn = new MySqlConnection(DatabaseManager.connString);
-            
-            // Kontrollera om keyword har ett inkommade värde
-            if (keyword == "")
-            {
-                //Skriv query för att hämta wishlist view
-                query = "SELECT * FROM mylibrary.wishlist;";
-            }
-            else
-            {
-                //Query för att söka på specifikt namn
-                query = $"CALL searchName('{keyword}');";
-            }
-
+            query = "SELECT * FROM mylibrary.priority_pile;";
             MySqlCommand cmd = new MySqlCommand(query, conn);
 
             try
@@ -216,7 +185,7 @@ namespace MyLibrary
                 conn.Open();
 
                 MySqlDataReader reader = cmd.ExecuteReader();
-                Book.wishList.Clear();
+                Book.priorityList.Clear();
                 while (reader.Read())
                 {
                     string title = reader["books_title"].ToString();
@@ -224,10 +193,10 @@ namespace MyLibrary
                     string genre = reader["genres"].ToString();
 
                     //create instance of book and save to list
-                    Book.wishList.Add(new Book(title, author, genre));
+                    Book.priorityList.Add(new Book(title, author, genre));
 
-                    //String to print to label
-                    lblwishList.Content += $"{title} by {author} \nGenre:{genre}\n{Environment.NewLine}";
+                    //string to print to label
+                    lblprioList.Content += $"{title} by {author} \nGenre:{genre}\n{Environment.NewLine}";
                 }
                 
                 reader.Close();
@@ -237,6 +206,19 @@ namespace MyLibrary
             {
                 MessageBox.Show(e.Message);
             }
+        }
+        private void addBook_Click(object sender, RoutedEventArgs e)
+        {
+            AddBook addBook = new AddBook(this, "Bookshelf");
+            addBook.Show();
+            this.Hide();
+        }
+
+        private void addWishlist_Click(object sender, RoutedEventArgs e)
+        {
+            AddBook addBook = new AddBook(this, "Wishlist");
+            addBook.Show();
+            this.Hide();
         }
 
         private void searchBook_Click(object sender, RoutedEventArgs e)
@@ -251,6 +233,11 @@ namespace MyLibrary
             AddBook addBook = new AddBook(this, "searchAuthor");
             addBook.Show();
             this.Hide();
+        }
+
+        private void updateLabel_Click(object sender, RoutedEventArgs e)
+        {
+            showWishlist();
         }
     }
 }

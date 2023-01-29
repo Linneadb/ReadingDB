@@ -52,7 +52,7 @@
         <Button x:Name="searchBook" Content="Search book title" Click="searchBook_Click" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
         <Button x:Name="searchAuthor" Content="Search author name" Click="searchAuthor_Click" VerticalAlignment="Top" Grid.Column="1" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
         
-        <Label Content="Show table:" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label Content="Show books in:" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         
         <ComboBox x:Name="booksLocationsComboBox"
             SelectedValuePath="Tag" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Row="2" Grid.Column="2"
@@ -78,7 +78,9 @@
             </TabControl>
         </StackPanel>
 
-        <Label Content="Wishlist" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="2" Grid.RowSpan="1" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="15" FontFamily="Arial"/>
-        <Label x:Name="lblwishList" Content="" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="3" Grid.RowSpan="3" Grid.ColumnSpan="3"/>
+        <Label Content="Books to read next!" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="15" FontFamily="Arial" HorizontalAlignment="Left" Width="160"/>
+        <Label x:Name="lblprioList" Content="" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="3"/>
+        <Button x:Name="updateLabel" Content="Update Priority List" Click="updateLabel_Click" VerticalAlignment="Bottom" Grid.Column="9" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
+
     </Grid>
 </Window>

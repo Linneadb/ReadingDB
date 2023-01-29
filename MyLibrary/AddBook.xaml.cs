@@ -27,8 +27,6 @@ namespace MyLibrary
         string location = "";
         MySqlConnection conn;
 
-        //Book.X = new Book(author, nationality, title, pages, series, year_written, language, location, genre)
-
         public AddBook(MainWindow mainWindow, string windowkey)
         {
             this.mainWindow = mainWindow;
@@ -36,63 +34,65 @@ namespace MyLibrary
 
             InitializeComponent();
             loadPage(windowkey);
-            
+
         }
 
         internal void loadPage(string windowkey)
         {
             switch (windowkey)
             {
-             case "Bookshelf":
-                location = "Bookshelf";
-                header.Text = "Add book to Library";
-                bookButton.Visibility = Visibility.Hidden;
-                pile.Visibility = Visibility.Visible;
-                    break;
-            
-            case "Wishlist":
-                header.Text = "Add book to Wishlist";
-                location = "Wishlist";
-                bookButton.Visibility = Visibility.Hidden;
+                case "Bookshelf":
+                    location = "Bookshelf";
+                    header.Text = "Add book to Library";
+                    bookButton.Visibility = Visibility.Hidden;
+                    pile.Visibility = Visibility.Visible;
                     break;
 
-            case "searchAuthor":
-                header.Text = "Search author name";
-                addButton.Visibility = Visibility.Hidden;
-                pile.Visibility = Visibility.Hidden;
-                bookButton.Visibility = Visibility.Hidden;
+                case "Wishlist":
+                    header.Text = "Add book to Wishlist";
+                    location = "Wishlist";
+                    bookButton.Visibility = Visibility.Hidden;
                     break;
 
-            case "searchBook":
-                header.Text = "Search book title";
-                addButton.Visibility = Visibility.Hidden;
-                pile.Visibility = Visibility.Hidden;
-                authorButton.Visibility = Visibility.Hidden;
+                case "searchAuthor":
+                    header.Text = "Search author name";
+                    addButton.Visibility = Visibility.Hidden;
+                    pile.Visibility = Visibility.Hidden;
+                    bookButton.Visibility = Visibility.Hidden;
                     break;
 
-            case "afterDelete":
-                header.Text = "Search author name or book title";
-                addButton.Visibility = Visibility.Hidden;
-                pile.Visibility = Visibility.Hidden;
-                bookButton.Visibility = Visibility.Visible;
-                authorButton.Visibility = Visibility.Visible;
-                addButton.Visibility = Visibility.Hidden;
+                case "searchBook":
+                    header.Text = "Search book title";
+                    addButton.Visibility = Visibility.Hidden;
+                    pile.Visibility = Visibility.Hidden;
+                    authorButton.Visibility = Visibility.Hidden;
                     break;
 
-            case "authorFound":
-            
-                addButton.Visibility = Visibility.Visible;
-                pile.Visibility = Visibility.Visible;
-                wishlistCheck.Visibility = Visibility.Visible;
+                case "afterDelete":
+                    header.Text = "Search or add new book";
+                    location = "";
+                    addButton.Visibility = Visibility.Hidden;
+                    pile.Visibility = Visibility.Hidden;
+                    bookButton.Visibility = Visibility.Visible;
+                    authorButton.Visibility = Visibility.Visible;
+                    addButton.Visibility = Visibility.Hidden;
                     break;
 
-            default:
-                header.Text = "You have no matching windowkey";
+                case "authorFound":
+
+                    addButton.Visibility = Visibility.Visible;
+                    pile.Visibility = Visibility.Visible;
+                    wishlistCheck.Visibility = Visibility.Visible;
+                    break;
+
+                default:
+                    header.Text = "You have no matching windowkey";
                     break;
             }
         }
 
-        internal void searchAuthor() {
+        internal void searchAuthor()
+        {
 
             string keyword;
             conn = new MySqlConnection(DatabaseManager.connString);
@@ -121,7 +121,7 @@ namespace MyLibrary
                     int authorId = Convert.ToInt32(reader["author_id"]);
                     string author = reader["authors_name"].ToString();
                     string nationality = reader["authors_nationality"].ToString();
-                   
+
                     Book.authorList.Add(new Book(authorId, author, nationality));
 
                     //print searchresult to textBoxes
@@ -145,13 +145,11 @@ namespace MyLibrary
                     box.Clear();
                 }
             }
-
-            else 
+            else
             {
                 returnText.Text = authorBox.Text + " found in database";
                 loadPage("authorFound");
             }
-
         }
 
         private void searchBook()
@@ -175,9 +173,10 @@ namespace MyLibrary
             try
             {
                 conn.Open();
-
                 MySqlDataReader reader = cmd.ExecuteReader();
+
                 Book.bookList.Clear();
+
                 while (reader.Read())
                 {
                     int bookId = Convert.ToInt32(reader["books_id"]);
@@ -234,11 +233,27 @@ namespace MyLibrary
             deleteButton.Visibility = Visibility.Visible;
         }
 
-        internal void createBook() {
+        internal void createBook()
+        {
 
             conn = new MySqlConnection(DatabaseManager.connString);
 
-            bool valid = validateTextboxes();
+            bool valid = false;
+            //validateTextboxes();
+            foreach (TextBox box in boxes.Children.OfType<TextBox>())
+            {
+                box.Text = box.Text.Trim();
+
+                if (box.Text == "")
+                {
+                    box.Background = Brushes.Red;
+                    valid = true;
+                }
+                else
+                {
+                    box.Background = Brushes.White;
+                }
+            }
 
             if (!valid)
             {
@@ -255,7 +270,8 @@ namespace MyLibrary
             string language = languageBox.Text;
             string genre = genreBox.Text;
 
-            if (location == "") {
+            if (location == "")
+            {
                 location = "Bookshelf";
             }
 
@@ -284,7 +300,22 @@ namespace MyLibrary
         internal void updateBook(Book book)
         {
             conn = new MySqlConnection(DatabaseManager.connString);
-            bool valid = validateTextboxes();
+            bool valid = false; 
+                //validateTextboxes();
+            foreach (TextBox box in boxes.Children.OfType<TextBox>())
+            {
+                box.Text = box.Text.Trim();
+
+                if (box.Text == "")
+                {
+                    box.Background = Brushes.Red;
+                    valid = true;
+                }
+                else
+                {
+                    box.Background = Brushes.White;
+                }
+            }
 
             if (!valid)
             {
@@ -332,10 +363,25 @@ namespace MyLibrary
         private void deleteBook(Book book)
         {
             conn = new MySqlConnection(DatabaseManager.connString);
-            bool valid = validateTextboxes();
+            bool valid = false;
+            //validateTextboxes();
+            foreach (TextBox box in boxes.Children.OfType<TextBox>())
+            {
+                box.Text = box.Text.Trim();
+
+                if (box.Text == "")
+                {
+                    box.Background = Brushes.Red;
+                    valid = true;
+                }
+                else
+                {
+                    box.Background = Brushes.White;
+                }
+            }
 
             string bookId = book.bookId.ToString();
-      
+
 
             string query = $"CALL delete_book('{bookId}');";
             MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -402,10 +448,10 @@ namespace MyLibrary
         }
         private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
-            deleteBook();
+            deleteBook(Book.bookList[0]);
         }
 
-        private bool validateTextboxes() 
+       /* private bool validateTextboxes()
         {
             foreach (TextBox box in boxes.Children.OfType<TextBox>())
             {
@@ -422,8 +468,7 @@ namespace MyLibrary
                     return false;
                 }
             }
-        }
-
+        }*/
     }
 }
 
