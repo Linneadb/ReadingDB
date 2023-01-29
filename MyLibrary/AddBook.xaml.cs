@@ -34,7 +34,6 @@ namespace MyLibrary
 
             InitializeComponent();
             loadPage(windowkey);
-
         }
 
         internal void loadPage(string windowkey)
@@ -79,10 +78,10 @@ namespace MyLibrary
                     break;
 
                 case "authorFound":
-
                     addButton.Visibility = Visibility.Visible;
                     pile.Visibility = Visibility.Visible;
                     wishlistCheck.Visibility = Visibility.Visible;
+                    editAuthorButton.Visibility = Visibility.Visible;
                     break;
 
                 default:
@@ -93,7 +92,6 @@ namespace MyLibrary
 
         internal void searchAuthor()
         {
-
             string keyword;
             conn = new MySqlConnection(DatabaseManager.connString);
 
@@ -118,7 +116,7 @@ namespace MyLibrary
                 Book.authorList.Clear();
                 while (reader.Read())
                 {
-                    int authorId = Convert.ToInt32(reader["author_id"]);
+                    int authorId = Convert.ToInt32(reader["authors_id"]);
                     string author = reader["authors_name"].ToString();
                     string nationality = reader["authors_nationality"].ToString();
 
@@ -150,6 +148,53 @@ namespace MyLibrary
                 returnText.Text = authorBox.Text + " found in database";
                 loadPage("authorFound");
             }
+        }
+        private void updateAuthor(Book book)
+        {
+            conn = new MySqlConnection(DatabaseManager.connString);
+            bool valid = false;
+            //validateTextboxes();
+            foreach (TextBox box in boxes.Children.OfType<TextBox>())
+            {
+                box.Text = box.Text.Trim();
+
+                if (box.Text == "")
+                {
+                    box.Background = Brushes.Red;
+
+                }
+                else
+                {
+                    box.Background = Brushes.White;
+                    valid = true;
+                }
+            }
+
+            if (!valid)
+            {
+                returnText.Text = "Complete missing data in marked fields.";
+                return;
+            }
+
+            string authorId = book.authorId.ToString();
+            string author = authorBox.Text;
+            string nation = nationBox.Text;
+            
+            string query = $"CALL update_author('{authorId}','{author}','{nation}');";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+
+            try
+            {
+                conn.Open();
+                cmd.ExecuteReader();
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            returnText.Text = "Author is updated in database";
         }
 
         private void searchBook()
@@ -247,11 +292,11 @@ namespace MyLibrary
                 if (box.Text == "")
                 {
                     box.Background = Brushes.Red;
-                    valid = true;
                 }
                 else
                 {
                     box.Background = Brushes.White;
+                    valid = true;
                 }
             }
 
@@ -309,11 +354,12 @@ namespace MyLibrary
                 if (box.Text == "")
                 {
                     box.Background = Brushes.Red;
-                    valid = true;
+                    
                 }
                 else
                 {
                     box.Background = Brushes.White;
+                    valid = true;
                 }
             }
 
@@ -363,25 +409,7 @@ namespace MyLibrary
         private void deleteBook(Book book)
         {
             conn = new MySqlConnection(DatabaseManager.connString);
-            bool valid = false;
-            //validateTextboxes();
-            foreach (TextBox box in boxes.Children.OfType<TextBox>())
-            {
-                box.Text = box.Text.Trim();
-
-                if (box.Text == "")
-                {
-                    box.Background = Brushes.Red;
-                    valid = true;
-                }
-                else
-                {
-                    box.Background = Brushes.White;
-                }
-            }
-
             string bookId = book.bookId.ToString();
-
 
             string query = $"CALL delete_book('{bookId}');";
             MySqlCommand cmd = new MySqlCommand(query, conn);
@@ -451,24 +479,35 @@ namespace MyLibrary
             deleteBook(Book.bookList[0]);
         }
 
-       /* private bool validateTextboxes()
+        private void editAuthorButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (TextBox box in boxes.Children.OfType<TextBox>())
+            if (Book.authorList.Count > 0)
             {
-                box.Text = box.Text.Trim();
-
-                if (box.Text == "")
-                {
-                    box.Background = Brushes.Red;
-                    return true;
-                }
-                else
-                {
-                    box.Background = Brushes.White;
-                    return false;
-                }
+                updateAuthor(Book.authorList[0]);
             }
-        }*/
+            else
+                returnText.Text = "Search for an author to edit";
+        }
+
+
+        /* private bool validateTextboxes()
+         {
+             foreach (TextBox box in boxes.Children.OfType<TextBox>())
+             {
+                 box.Text = box.Text.Trim();
+
+                 if (box.Text == "")
+                 {
+                     box.Background = Brushes.Red;
+                     return true;
+                 }
+                 else
+                 {
+                     box.Background = Brushes.White;
+                     return false;
+                 }
+             }
+         }*/
     }
 }
 
