@@ -34,11 +34,13 @@
                 <Button Height="20" x:Name="authorButton" Click ="authorButton_Click" Width="120" Content="Search author name" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="50 5 10 30" Visibility="Visible"/>
                 <Button Height="20" x:Name="bookButton" Click ="bookButton_Click" Width="120" Content="Search book title" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0 10 10 0" Visibility="Visible"/>
             </StackPanel>
-           <!--/ <Button Height="20" x:Name="submitButton" Click ="clickSubmitButton" Width="100" Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Visible"/>
-            <Button Height="20" x:Name="ContinueShoppingButton" Click ="ClickContinueShoppingButton" Width="100" Content="Continue shopping" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="50 0 200 30" Background="Green" Visibility="Hidden"/>/-->
-            <Button Height="20" x:Name="addButton" Click="addButton_Click" Width="100" Content="Add book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="20 0 200 30" Visibility="Visible"/> 
+            
+            <Button Height="20" x:Name="addButton" Click="addButton_Click" Width="80" Content="Add book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 200 30" Visibility="Visible"/>
+            <Button Height="20" x:Name="editButton" Click="editButton_Click" Width="80" Content="Edit book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="200 0 200 30" Visibility="Hidden"/>
+            <Button Height="20" x:Name="deleteButton" Click="deleteButton_Click" Width="80" Content="Delete book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="380 0 200 30" Visibility="Hidden"/>
             <Button Height="20" x:Name="returnButton" Click="returnButton_Click" Width="130" Content="Return to Main Window" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0 0 0 0" Visibility="Visible"/> 
         </Grid>
         <CheckBox x:Name="pile" Content="Priority Pile" HorizontalAlignment="Left" Margin="450,30,0,0" VerticalAlignment="Top" Visibility="Hidden" Checked="pile_Checked"/>
+        <CheckBox x:Name="wishlistCheck" Content="Wishlist" HorizontalAlignment="Left" Margin="550,30,0,0" VerticalAlignment="Top" Visibility="Hidden" Checked="wishlistCheck_Checked"/>
     </Grid>
 </Window>
