@@ -80,7 +80,8 @@
 
         <Label Content="Books to read next!" VerticalAlignment="Bottom" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="0" Grid.RowSpan="1" Grid.ColumnSpan="2" FontWeight="Bold" FontSize="15" FontFamily="Arial" HorizontalAlignment="Left" Width="160"/>
         <Label x:Name="lblprioList" Content="" VerticalAlignment="Top" HorizontalContentAlignment="Stretch" Grid.Column="9" Grid.Row="2" Grid.RowSpan="3" Grid.ColumnSpan="3"/>
-        <Button x:Name="updateLabel" Content="Update Priority List" Click="updateLabel_Click" VerticalAlignment="Bottom" Grid.Column="9" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="2" Background="Aquamarine"/>
+        <Button x:Name="edit" Content="Edit book" Click="edit_Click" VerticalAlignment="Bottom" Grid.Column="9" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="1" Background="Aquamarine" Visibility="Hidden"/>
+        <Button x:Name="updateLabel" Content="Update List" Click="updateLabel_Click" VerticalAlignment="Bottom" Grid.Column="11" Grid.Row="5" Grid.RowSpan="1" Grid.ColumnSpan="1" Background="Aquamarine"/>
 
     </Grid>
 </Window>

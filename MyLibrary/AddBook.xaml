@@ -38,7 +38,7 @@
             
             <Button Height="20" x:Name="addButton" Click="addButton_Click" Width="80" Content="Add book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 200 30" Visibility="Visible"/>
             <Button Height="20" x:Name="editButton" Click="editButton_Click" Width="80" Content="Edit book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="200 0 200 30" Visibility="Hidden"/>
-            <Button Height="20" x:Name="deleteButton" Click="deleteButton_Click" Width="80" Content="Delete book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="380 0 200 30" Visibility="Hidden"/>
+            <Button Height="20" x:Name="deleteButton" Click="deleteButton_Click" Width="80" Content="Delete book" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 0 200 30" Visibility="Hidden"/>
             <Button Height="20" x:Name="returnButton" Click="returnButton_Click" Width="130" Content="Return to Main Window" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0 0 0 0" Visibility="Visible"/> 
         </Grid>
         <CheckBox x:Name="pile" Content="Priority Pile" HorizontalAlignment="Left" Margin="450,30,0,0" VerticalAlignment="Top" Visibility="Hidden" Checked="pile_Checked"/>

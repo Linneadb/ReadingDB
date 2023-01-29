@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using MyLibrary;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,7 @@ namespace MyLibrary
         string windowkey;
         string location = "";
         MySqlConnection conn;
+        private int selectedBookId;
 
         public AddBook(MainWindow mainWindow, string windowkey)
         {
@@ -34,6 +36,14 @@ namespace MyLibrary
 
             InitializeComponent();
             loadPage(windowkey);
+        }
+
+        public AddBook(MainWindow mainWindow, string windowkey, int selectedBookId) : this(mainWindow, windowkey)
+        {
+            this.selectedBookId = selectedBookId;
+            InitializeComponent();
+            loadPage(windowkey);
+            getBook(selectedBookId);
         }
 
         internal void loadPage(string windowkey)
@@ -67,11 +77,21 @@ namespace MyLibrary
                     authorButton.Visibility = Visibility.Hidden;
                     break;
 
+                case "editBook":
+                    header.Text = "Edit book";
+                    addButton.Visibility = Visibility.Hidden;
+                    pile.Visibility = Visibility.Visible;
+                    wishlistCheck.Visibility = Visibility.Visible;
+                    authorButton.Visibility = Visibility.Hidden;
+                    bookButton.Visibility = Visibility.Hidden;
+                    editButton.Visibility = Visibility.Visible;
+                    deleteButton.Visibility = Visibility.Visible;
+                    break;
+
                 case "afterDelete":
                     header.Text = "Search or add new book";
                     location = "";
                     addButton.Visibility = Visibility.Hidden;
-                    pile.Visibility = Visibility.Hidden;
                     bookButton.Visibility = Visibility.Visible;
                     authorButton.Visibility = Visibility.Visible;
                     addButton.Visibility = Visibility.Hidden;
@@ -82,6 +102,14 @@ namespace MyLibrary
                     pile.Visibility = Visibility.Visible;
                     wishlistCheck.Visibility = Visibility.Visible;
                     editAuthorButton.Visibility = Visibility.Visible;
+                    break;
+
+                case "bookFound":
+                    addButton.Visibility = Visibility.Hidden;
+                    pile.Visibility = Visibility.Visible;
+                    wishlistCheck.Visibility = Visibility.Visible;
+                    editButton.Visibility = Visibility.Visible;
+                    deleteButton.Visibility = Visibility.Visible;
                     break;
 
                 default:
@@ -152,23 +180,7 @@ namespace MyLibrary
         private void updateAuthor(Book book)
         {
             conn = new MySqlConnection(DatabaseManager.connString);
-            bool valid = false;
-            //validateTextboxes();
-            foreach (TextBox box in boxes.Children.OfType<TextBox>())
-            {
-                box.Text = box.Text.Trim();
-
-                if (box.Text == "")
-                {
-                    box.Background = Brushes.Red;
-
-                }
-                else
-                {
-                    box.Background = Brushes.White;
-                    valid = true;
-                }
-            }
+            bool valid = validateTextboxes();
 
             if (!valid)
             {
@@ -179,7 +191,7 @@ namespace MyLibrary
             string authorId = book.authorId.ToString();
             string author = authorBox.Text;
             string nation = nationBox.Text;
-            
+
             string query = $"CALL update_author('{authorId}','{author}','{nation}');";
             MySqlCommand cmd = new MySqlCommand(query, conn);
 
@@ -263,42 +275,74 @@ namespace MyLibrary
             if (Book.bookList.Count == 0)
             {
                 returnText.Text = titleBox.Text + " not found in database";
-                foreach (TextBox box in boxes.Children.OfType<TextBox>())
-                {
-                    box.Clear();
-                }
             }
 
             else
             {
                 returnText.Text = titleBox.Text + " found in database";
+                loadPage("bookFound");
             }
 
-            editButton.Visibility = Visibility.Visible;
-            deleteButton.Visibility = Visibility.Visible;
+        }
+
+        private void getBook(int bookId)
+        {
+            conn = new MySqlConnection(DatabaseManager.connString);
+
+            string query = $"CALL get_book('{bookId}');";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+
+            try
+            {
+                conn.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+
+                Book.bookList.Clear();
+
+                while (reader.Read())
+                {
+                    string author = reader["authors_name"].ToString();
+                    string nation = reader["authors_nationality"].ToString();
+                    string title = reader["books_title"].ToString();
+                    int pages = Convert.ToInt32(reader["books_nr_pages"]);
+                    int series = Convert.ToInt32(reader["books_nr_in_series"]);
+                    int year_written = Convert.ToInt32(reader["books_year_written"]);
+                    string language = reader["languages_languages"].ToString();
+                    string genre = reader["genres_genres"].ToString();
+                    string location = reader["locations_locations"].ToString();
+
+                    Book.bookList.Add(new Book(bookId, author, nation, title, pages, series, year_written, language, location, genre));
+
+                    if (Book.bookList.Count > 1)
+                    {
+                        //TODO: nextButton.Visability = Visibility.Visible;
+                    }
+
+                    authorBox.Text = author;
+                    nationBox.Text = nation;
+                    titleBox.Text = title;
+                    pagesBox.Text = pages.ToString();
+                    seriesBox.Text = series.ToString();
+                    yearBox.Text = year_written.ToString();
+                    languageBox.Text = language;
+                    genreBox.Text = genre;
+                }
+
+                reader.Close();
+                conn.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
         }
 
         internal void createBook()
         {
-
             conn = new MySqlConnection(DatabaseManager.connString);
 
-            bool valid = false;
-            //validateTextboxes();
-            foreach (TextBox box in boxes.Children.OfType<TextBox>())
-            {
-                box.Text = box.Text.Trim();
-
-                if (box.Text == "")
-                {
-                    box.Background = Brushes.Red;
-                }
-                else
-                {
-                    box.Background = Brushes.White;
-                    valid = true;
-                }
-            }
+            bool valid = validateTextboxes();
 
             if (!valid)
             {
@@ -338,30 +382,14 @@ namespace MyLibrary
             foreach (TextBox box in boxes.Children.OfType<TextBox>())
             {
                 box.Clear();
-                returnText.Text = "";
             }
         }
 
         internal void updateBook(Book book)
         {
             conn = new MySqlConnection(DatabaseManager.connString);
-            bool valid = false; 
-                //validateTextboxes();
-            foreach (TextBox box in boxes.Children.OfType<TextBox>())
-            {
-                box.Text = box.Text.Trim();
 
-                if (box.Text == "")
-                {
-                    box.Background = Brushes.Red;
-                    
-                }
-                else
-                {
-                    box.Background = Brushes.White;
-                    valid = true;
-                }
-            }
+            bool valid = validateTextboxes();
 
             if (!valid)
             {
@@ -399,11 +427,6 @@ namespace MyLibrary
             }
 
             returnText.Text = "Book is updated in database";
-            foreach (TextBox box in boxes.Children.OfType<TextBox>())
-            {
-                box.Clear();
-                returnText.Text = "";
-            }
         }
 
         private void deleteBook(Book book)
@@ -429,7 +452,6 @@ namespace MyLibrary
             foreach (TextBox box in boxes.Children.OfType<TextBox>())
             {
                 box.Clear();
-                returnText.Text = "";
             }
 
             loadPage("afterDelete");
@@ -489,25 +511,26 @@ namespace MyLibrary
                 returnText.Text = "Search for an author to edit";
         }
 
+        private bool validateTextboxes()
+        {
+            foreach (TextBox box in boxes.Children.OfType<TextBox>())
+            {
+                box.Text = box.Text.Trim();
 
-        /* private bool validateTextboxes()
-         {
-             foreach (TextBox box in boxes.Children.OfType<TextBox>())
-             {
-                 box.Text = box.Text.Trim();
+                if (box.Text == "")
+                {
+                    box.Background = Brushes.Red;
+                    return false;
+                }
+                else
+                {
+                    box.Background = Brushes.White;
 
-                 if (box.Text == "")
-                 {
-                     box.Background = Brushes.Red;
-                     return true;
-                 }
-                 else
-                 {
-                     box.Background = Brushes.White;
-                     return false;
-                 }
-             }
-         }*/
+                }
+            }
+
+            return true;
+        }
     }
 }
 
